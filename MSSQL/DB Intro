@@ -1,0 +1,361 @@
+--3 Create Tables
+CREATE TABLE Towns (
+    Id INT NOT NULL,
+    [Name] NVARCHAR(100)
+)
+
+CREATE TABLE Minions(
+    Id INT NOT NULL,
+    [Name] NVARCHAR(100),
+    Age INT
+)
+--3 Alter Minions Table
+
+ALTER TABLE Towns
+ADD CONSTRAINT PK_Towns PRIMARY KEY (Id);
+
+ALTER TABLE Minions
+ADD CONSTRAINT PK_Minions PRIMARY KEY (Id);
+
+ALTER TABLE Minions
+ADD TownId INT
+
+ALTER TABLE Minions
+ADD CONSTRAINT FK_TownId
+FOREIGN KEY (TownId) REFERENCES Towns(Id);
+
+--4 Insert Records in Both Tables
+
+INSERT INTO Towns
+VALUES
+(1,'Sofia'),
+(2,'Plovdiv'),
+(3,'Varna');
+
+INSERT INTO Minions
+VALUES
+(1,'Kevin',22,1),
+(2,'Bob',15,3),
+(3,'Steward',NULL,2);
+
+--5 Truncate Table Minions
+TRUNCATE TABLE Minions
+
+--6 Drop All Tables
+DROP TABLE Minions
+DROP TABLE Towns
+
+--7 Create Table People
+
+CREATE TABLE People(
+    [Id] BIGINT NOT NULL IDENTITY
+    ,[Name] NVARCHAR(200) NOT NULL
+    ,[Picture] VARBINARY
+    ,CHECK (DATALENGTH([Picture]) <= 2000000)
+    ,[Height] DECIMAL(3,2)
+    ,[Weight] DECIMAL(5,2)
+    ,[Gender] CHAR(1) NOT NULL
+    ,CHECK([Gender] = 'm' OR [Gender] = 'f')
+    ,[Birthdate] DATE NOT NULL
+    ,[Biography] NVARCHAR(MAX)
+)
+
+INSERT INTO People
+VALUES('Kon',123,1.78,87,'m',GETDATE(),11111111)
+,('Kon2',123,1.78,87,'m',GETDATE(),11111111)
+,('Kon3',123,1.78,87,'m',GETDATE(),11111111)
+,('Kon4',123,1.78,87,'m',GETDATE(),11111111)
+,('Kon5',123,1.78,87,'m',GETDATE(),11111111)
+
+--8 Create Table Users
+
+CREATE TABLE Users (
+    [Id] BIGINT PRIMARY KEY IDENTITY
+    ,[Username] VARCHAR(30) NOT NULL
+    ,[Password] VARCHAR(26) NOT NULL
+    ,[ProfilePicture] VARBINARY
+    ,CHECK (DATALENGTH([ProfilePicture]) <=900000)
+    ,[LastLoginTime] DATE
+    ,[IsDeleted] VARCHAR(5)
+    ,CHECK([IsDeleted] = 'true' OR [IsDeleted] = 'false')
+)
+
+INSERT INTO Users
+VALUES('Kon',123,1333,GETDATE(),'true')
+,('Kon2',123,1333,GETDATE(),'true')
+,('Kon3',123,1333,GETDATE(),'true')
+,('Kon4',123,1333,GETDATE(),'true')
+,('Kon5',123,1333,GETDATE(),'true')
+
+--9 Change Primary Key
+
+ALTER TABLE [Users] DROP CONSTRAINT PK__Users__3214EC07D9590C78
+ALTER TABLE [Users] ADD CONSTRAINT PK_IdUsername PRIMARY KEY(Id, Username);
+
+--10 Add Check Constraint
+ALTER TABLE [Users] ADD CONSTRAINT CHK_PasswordMinLen CHECK(LEN([Password]) >= 5);
+
+--11 Set Default Value of a Field
+ALTER TABLE [Users] 
+ADD CONSTRAINT df_Time 
+DEFAULT GETDATE() FOR [LastLoginTime];
+
+--12 Set Unique Field
+ALTER TABLE [Users] DROP CONSTRAINT PK_IdUsername
+
+ALTER TABLE [Users] ADD CONSTRAINT PK_Id PRIMARY KEY(Id);
+
+ALTER TABLE [Users] ADD CONSTRAINT UC_Username UNIQUE (Username);
+
+ALTER TABLE [Users] ADD CONSTRAINT CHK_UsernameLen CHECK(LEN([Username]) >= 3);
+--13 Movies Database
+CREATE TABLE Directors(
+	[Id] INT IDENTITY PRIMARY KEY NOT NULL 
+   ,[DirectorName] NVARCHAR(150) NOT NULL
+   ,[Notes] NVARCHAR(150)
+)
+CREATE TABLE Genres(
+	[Id] INT IDENTITY PRIMARY KEY NOT NULL 
+   ,[GenreName] NVARCHAR(150) NOT NULL
+   ,[Notes] NVARCHAR(150) 
+)
+CREATE TABLE Categories(
+	[Id] INT IDENTITY PRIMARY KEY NOT NULL 
+   ,[CategoryName] NVARCHAR(150) NOT NULL
+   ,[Notes] NVARCHAR(150)
+)
+CREATE TABLE Movies(
+	[Id] INT IDENTITY PRIMARY KEY NOT NULL 
+   ,[Title] NVARCHAR(100) NOT NULL
+   ,[DirectorId] INT NOT NULL
+   ,[CopyrightYear] DATE NOT NULL
+   ,[Length] DECIMAL(3,2) NOT NULL
+   ,[GenreId] INT NOT NULL
+   ,[CategoryId] INT  NOT NULL
+   ,[Rating] INT
+   ,[Notes] NVARCHAR(150)
+)
+
+
+INSERT INTO Directors
+VALUES('Kon','Horse')
+,('Kon2','Horse2')
+,('Kon3','Horse3')
+,('Kon4','Horse4')
+,('Kon5','Horse5');
+
+INSERT INTO Genres
+VALUES('Animals','')
+,('Animals2','Horse2')
+,('Animals3','Horse3')
+,('Animals4','Horse4')
+,('Animals5','Horse5');
+
+INSERT INTO Categories
+VALUES('Animals','')
+,('SPEED','Horse2')
+,('RACING','Horse3')
+,('SPORTS','Horse4')
+,('MOVIE','Horse5');
+
+INSERT INTO Movies
+VALUES('s',1,GETDATE(),2,1,1,5,'2')
+,('s',2,GETDATE(),2,2,2,5,'2')
+,('s',3,GETDATE(),2,3,3,5,'2')
+,('s',4,GETDATE(),2,4,4,5,'2')
+,('s',5,GETDATE(),2,5,5,5,'2')
+
+--14 Car Rental Database
+
+CREATE TABLE Categories(
+	[Id] INT PRIMARY KEY IDENTITY NOT NULL
+   ,[CategoryName] NVARCHAR(50) NOT NULL
+   ,[DailyRate] DECIMAL(3,2) 
+   ,[WeeklyRate] DECIMAL(4,2) 
+   ,[MonthlyRate] DECIMAL(5,2)
+   ,[WeekendRate] DECIMAL(3,2)
+)
+
+INSERT INTO Categories
+VALUES('S',2.2,3,3,3)
+,('S',2.3,3,7,1)
+,('S',2.4,5,3,6)
+
+CREATE TABLE Cars(
+	[Id] INT PRIMARY KEY IDENTITY NOT NULL
+   ,[PlateNumber] NVARCHAR(25) NOT NULL
+   ,[Manufacturer] NVARCHAR(50) NOT NULL
+   ,[Model] NVARCHAR(50) NOT NULL
+   ,[CarYear] INT
+   ,[CategoryId] INT NOT NULL
+   ,[Doors] INT
+   ,[Picture] VARBINARY(MAX)
+   ,[Condition] NVARCHAR(25)
+   ,[Available] NVARCHAR(10)
+)
+
+INSERT INTO Cars
+VALUES('1123123','S','T',1,1,3,12345,'NEW','NO')
+,('1141423','S','T',6,1,3,1245,'NEW','YES')
+,('186623','S','T',10,1,3,123245,'OLD','NO')
+
+CREATE TABLE Employees(
+	[Id] INT PRIMARY KEY IDENTITY NOT NULL
+   ,[FirstName]	NVARCHAR(50)NOT NULL
+   ,[LastName] NVARCHAR(50)NOT NULL
+   ,[Title] NVARCHAR(10)
+   ,[Notes] NVARCHAR(MAX)
+)
+
+INSERT INTO Employees
+VALUES('MITKO','MITKOV','MITIO','NQMA KAKVO DA KAJA')
+,('NEMITKO','DAMITKOV','MITIOU','NQMA KAKVO DA KAJA')
+,('DAMITKO','NEMITKOV','MITIOE','NQMA KAKVO DA KAJA')
+
+CREATE TABLE Customers(
+	[Id] INT PRIMARY KEY IDENTITY NOT NULL
+   ,[DriverLicenceNumber] INT NOT NULL
+   ,[FullName] NVARCHAR(100) NOT NULL
+   ,[Address] NVARCHAR(MAX)
+   ,[City] NVARCHAR(25)
+   ,[ZIPCode] INT
+   ,[Notes] NVARCHAR(MAX)
+)
+
+INSERT INTO Customers
+VALUES(113345,'mitko mitkov','ul Street','sredec',8300,'hlqb')
+,(213345,'mitko mitkov','ul Street','sredec',8300,'bql hlqb')
+,(313345,'mitko mitkov','ul Street','sredec',8300,'cheren hlqb')
+
+CREATE TABLE RentalOrders(
+[Id] INT PRIMARY KEY IDENTITY NOT NULL
+,[EmployeeId] INT 
+,[CustomerId] INT 
+,[CarId] INT
+,[TankLevel] DECIMAL(4,2)
+,[KilometrageStart] DECIMAL
+,[KilometrageEnd] DECIMAL
+,[TotalKilometrage] DECIMAL
+,[StartDate] DATE
+,[EndDate] DATE
+,[TotalDays] INT
+,[RateApplied] DECIMAL
+,[TaxRate] DECIMAL
+,[OrderStatus] NVARCHAR(20)
+,[Notes] NVARCHAR(MAX)
+)
+
+INSERT INTO RentalOrders
+VALUES(1,1,1,1.1,23,40,63,GETDATE(), GETDATE(), 0,1.2,0.2,'DONE', 'MNOGO PISANE')
+,(1,1,1,1.1,23,40,63,GETDATE(), GETDATE(), 0,1.2,0.2,'DONE', 'NOHSTNA SMQNA IZMARQ')
+,(1,1,1,1.1,23,40,63,GETDATE(), GETDATE(), 0,1.2,0.2,'DONE', 'HELLO WORLD')
+
+--15 Hotel DB
+CREATE TABLE Employees(
+	[Id] INT PRIMARY KEY IDENTITY NOT NULL
+   ,[FirstName]	NVARCHAR(50)NOT NULL
+   ,[LastName] NVARCHAR(50)NOT NULL
+   ,[Title] NVARCHAR(10)
+   ,[Notes] NVARCHAR(MAX)
+)
+
+INSERT INTO Employees
+VALUES('K','K','KON','SDASDASD')
+,('S','K','KON','SDASDASD')
+,('G','K','KON','SDASDASD')
+
+CREATE TABLE Customers(
+	[AccountNumber] INT PRIMARY KEY IDENTITY NOT NULL
+   ,[FirstName]	NVARCHAR(50)NOT NULL
+   ,[LastName] NVARCHAR(50)NOT NULL
+   ,[PhoneNumber] CHAR(10)
+   ,[EmergencyName] NVARCHAR(50)NOT NULL
+   ,[EmergencyNumber] CHAR(10) NOT NULL
+    ,[Notes] NVARCHAR(MAX)
+)
+
+INSERT INTO Customers
+VALUES('K','K','989898','S','213121','DSAD')
+,('Z','K','989898','S','213121','DSAD')
+,('S','K','989898','S','213121','DSAD')
+
+CREATE TABLE RoomStatus(
+	[RoomStatus] NVARCHAR(10)
+   ,[Notes] NVARCHAR(MAX)
+)
+
+INSERT INTO RoomStatus
+VALUES('CLEAN','READY TO USE')
+,('NOT CLEAN' ,'DO NOT USE!')
+,('REPAIRING', 'USE AFTER 10D')
+
+CREATE TABLE RoomTypes(
+	[RoomType] NVARCHAR(10)
+   ,[Notes] NVARCHAR(MAX)
+)
+
+INSERT INTO RoomTypes
+VALUES('DBL', 'DSA')
+,('SGL' ,'DO NOT USE!')
+,('FAM', 'USE AFTER 10D')
+
+
+CREATE TABLE BedTypes(
+	[BedTypes] NVARCHAR(10)
+   ,[Notes] NVARCHAR(MAX)
+)
+
+INSERT INTO BedTypes
+VALUES('SING', 'DSA')
+,('SGL' ,'DO NOT USE!')
+,('FAM', 'USE AFTER 10D')
+
+CREATE TABLE Rooms(
+	[RoomNumber] CHAR(5) PRIMARY KEY NOT NULL
+   ,[RoomType] NVARCHAR(25)
+   ,[BedType] NVARCHAR(25)
+   ,[Rate] DECIMAL
+   ,[RoomStatus] NVARCHAR(10)
+   ,[Notes] NVARCHAR(MAX)
+)
+
+INSERT INTO Rooms
+VALUES('234','SGL','FAM',2.3,'CLEAN','READY')
+,('24','SGL','FAM',2.3,'CLEAN','READY')
+,('23','SGL','FAM',2.3,'CLEAN','READY')
+
+CREATE TABLE Payments(
+	[Id] INT PRIMARY KEY IDENTITY NOT NULL
+   ,[EmployeeId] INT NOT NULL
+   ,[PaymentDate] DATETIME2 NOT NULL
+   ,[AccountNumber] INT NOT NULL
+   ,[FirstDateOccupied] DATETIME2
+   ,[LastDateOccupied] DATETIME2
+   ,[TotalDays] INT
+   ,[AmountCharged] DECIMAL NOT NULL
+   ,[TaxRate] DECIMAL
+   ,[TaxAmount] DECIMAL
+   ,[PaymentTotal] DECIMAL NOT NULL
+   ,[Notes] NVARCHAR(MAX)
+)
+
+INSERT INTO Payments
+VALUES(1,GETDATE(),1,GETDATE(),GETDATE(),10,123.2,1.2,0.2,1000,'PAID')
+,(1,GETDATE(),1,GETDATE(),GETDATE(),10,123.2,1.2,0.2,1000,'PAID')
+,(1,GETDATE(),1,GETDATE(),GETDATE(),10,123.2,1.2,0.2,1000,'PAID')
+
+CREATE TABLE Occupancies(
+	[Id] INT PRIMARY KEY IDENTITY NOT NULL
+   ,[EmployeeId] INT NOT NULL
+   ,[DateOccupied] DATETIME2
+   ,[AccountNumber] INT NOT NULL
+   ,[RoomNumber] CHAR(5)
+   ,[RateApplied] DECIMAL
+   ,[PhoneCharge] DECIMAL
+   ,[Notes] NVARCHAR(MAX)
+)
+
+INSERT INTO Occupancies
+VALUES(1,GETDATE(),1,234,2.3,234,'TO BE PAID')
+,(1,GETDATE(),1,234,2.3,234,'TO BE PAID')
+,(1,GETDATE(),1,234,2.3,234,'TO BE PAID')
