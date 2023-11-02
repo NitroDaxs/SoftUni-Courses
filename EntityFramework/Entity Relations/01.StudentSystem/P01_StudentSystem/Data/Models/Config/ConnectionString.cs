@@ -3,6 +3,6 @@
     public class ConnectionString
     {
         public const string ConnectionStr =
-            "Server =(localdb)\\MSSQLLocalDB; Database=StudentSystem;Integrated Security = True; TrustServerCertificate=True;";
+            "Server =.; Database=StudentSystem;Integrated Security = True; TrustServerCertificate=True;";
     }
 }
